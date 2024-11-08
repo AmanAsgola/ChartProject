@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>D3 Chart</title>
+    <script src="https://d3js.org/d3.v5.min.js"></script>
+</head>
+<body>
+    <h2>Sample D3 Chart</h2>
+    <div id="chart"></div>
+    <script>
+        // Data passed from Django view
+        const chartData = {{ chart_data | safe }};
+        const data = chartData.values;
+        const labels = chartData.labels;
+
+        // D3 chart configuration
+        const width = 500;
+        const height = 200;
+        const svg = d3.select("#chart")
+                      .append("svg")
+                      .attr("width", width)
+                      .attr("height", height);
+
+        svg.selectAll("rect")
+           .data(data)
+           .enter()
+           .append("rect")
+           .attr("x", (d, i) => i * 60)
+           .attr("y", d => height - d * 4)
+           .attr("width", 40)
+           .attr("height", d => d * 4)
+           .attr("fill", "teal");
+
+        svg.selectAll("text")
+           .data(data)
+           .enter()
+           .append("text")
+           .text(d => d)
+           .attr("x", (d, i) => i * 60 + 10)
+           .attr("y", d => height - d * 4 - 10)
+           .attr("fill", "black");
+    </script>
+</body>
+</html>
